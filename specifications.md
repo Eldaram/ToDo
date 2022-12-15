@@ -24,6 +24,7 @@
   - Show a calendar to choose the date (use broser interface ?)
 - Make a task reapetable
   - Show a calendar to see when it was completed or not.
+- Add a quick cancel option for operations on client
 
 # Technology to use
 - I really like java to create an API, let's use quarkus.
