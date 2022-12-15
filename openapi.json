@@ -1,0 +1,499 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ToDo",
+    "description": "Documentation for a ToDo REST API",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/hello": {
+      "get": {
+        "summary": "Return Hello world",
+        "description": "easy to understand",
+        "responses": {
+          "200": {
+            "description": "A JSON array with just hello and world",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task": {
+      "get": {
+        "summary": "Get all tasks",
+        "description": "This get all task in the database, completed or not",
+        "responses": {
+          "200": {
+            "description": "A JSON array of task",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                      },
+                      "list": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                      },
+                      "done": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "cook pasta"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "it takes 7"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/{list}": {
+      "get": {
+        "summary": "Get task from a list",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of all task matching a specific list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                      },
+                      "list": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                      },
+                      "done": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "cook pasta"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "it takes 7"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "List Id is invalid"
+          },
+          "404": {
+            "description": "There is no list linked to Id"
+          }
+        }
+      },
+      "post": {
+        "summary": "add a task in a list",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": true,
+            "description": "Content of the task",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": true,
+            "description": "description of task",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "succeded"
+          },
+          "400": {
+            "description": "if a parameter is invalid, it returns a list of every parameters with errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "title"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "There is no list linked to Id"
+          }
+        }
+      }
+    },
+    "/task/{list}/{task}": {
+      "patch": {
+        "summary": "update a specific task, one or multiples optionals parameters must be sent.",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "task",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked task",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "description": "Content of the task",
+            "schema": {
+              "type": "string",
+              "example": "clean the holodecks"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "description": "description of task",
+            "schema": {
+              "type": "string",
+              "example": "Think to wear a mask"
+            }
+          },
+          {
+            "name": "completed",
+            "in": "query",
+            "required": false,
+            "description": "description of task",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "new_list",
+            "in": "query",
+            "required": false,
+            "description": "the new list for the task",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated correctly"
+          },
+          "400": {
+            "description": "List or task Id is invalid (priority) OR there was no edit to do."
+          },
+          "404": {
+            "description": "targeted task or list doesn't exist"
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete a specific task",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "task",
+            "in": "path",
+            "required": true,
+            "description": "ID of the asked task",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the name of the deleted task",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Take Brian out of the microwave"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "List or task Id is invalid (priority)"
+          },
+          "404": {
+            "description": "targeted task or list doesn't exist"
+          }
+        }
+      }
+    },
+    "/list": {
+      "get": {
+        "summary": "Get all lists",
+        "description": "This get all list in the database, with their names and how many not completed task they have",
+        "responses": {
+          "200": {
+            "description": "A JSON array of task",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Seven of nine morning routine"
+                      },
+                      "remaning": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 42
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new list",
+        "description": "A new list is by default empty",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "name of the new list",
+            "schema": {
+              "type": "string",
+              "example": "shopping list for the potion shop"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List was created (empty)"
+          },
+          "400": {
+            "description": "At least one parameters was problematic"
+          }
+        }
+      }
+    },
+    "/list/{list}": {
+      "get": {
+        "summary": "send a specific list",
+        "description": "Just like in /list but with only one object.",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "id of the targeted list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 31
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a signle list with name and number of remaning tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 4
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Seven of nine morning routine"
+                    },
+                    "remaning": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 42
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "List Id is invalid"
+          },
+          "404": {
+            "description": "There is no list linked to Id"
+          }
+        }
+      },
+      "patch": {
+        "summary": "change something with a list",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "id of the targeted list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 31
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "id of the targeted list",
+            "schema": {
+              "type": "string",
+              "example": "Seven of nine night routine"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Everything went fine"
+          },
+          "404": {
+            "description": "There is no list linked to Id"
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete a list and every task linked to it",
+        "parameters": [
+          {
+            "name": "list",
+            "in": "path",
+            "required": true,
+            "description": "id of the targeted list",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 31
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list was correctly destroyed"
+          },
+          "404": {
+            "description": "There is no list linked to Id"
+          }
+        }
+      }
+    }
+  }
+}
