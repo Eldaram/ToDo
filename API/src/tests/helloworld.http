@@ -1,0 +1,5 @@
+http://localhost:4567/
+Accept: application/json
+
+###
+POST http://localhost:4567/users?username=jmorgan&email=jon.morgan@boxuk.com
